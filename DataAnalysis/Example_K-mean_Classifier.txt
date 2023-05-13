@@ -1,0 +1,137 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Назначить имя файла электронной таблицы `file`
+file = 'сrop-recommendation.xls'
+# Загрузить таблицу
+data = pd.read_excel(file, usecols='A:H')
+# Вывод сообщения на консоль
+print("Вывод первых 5-и записей:")
+print(data[:5])
+print("Признаки, содержащиеся в данном датасете:")
+print(data.columns)
+
+'''         Стандартизация датасета
+- это означает корректировку каждого значения x так, 
+чтобы они находились примерно в одном диапазоне.
+'''
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+scaler.fit(data.drop('label', axis=1))
+scaled_features = scaler.transform(data.drop('label', axis=1))
+scaled_data = pd.DataFrame(scaled_features, columns = data.drop('label', axis=1).columns)
+print("Вывод первых 5-и стандартизированных записей:")
+print(scaled_data[:5])
+'''
+Разделение датасета на обучающие и тестовые данные
+'''
+from sklearn.model_selection import train_test_split
+x = scaled_data
+y = data['label']
+x_training_data, x_test_data, y_training_data, y_test_data = train_test_split(x, y, test_size = 0.3)
+'''
+Обучение модели K-ближайших соседей
+'''
+from sklearn.neighbors import KNeighborsClassifier
+model = KNeighborsClassifier(n_neighbors = 1)
+model.fit(x_training_data, y_training_data)
+'''
+Делаем предсказания с помощью алгоритма K-ближайших соседей
+'''
+predictions = model.predict(x_test_data)
+# Оценка точности нашей модели
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+print(classification_report(y_test_data, predictions))
+# сгенерировать матрицу ошибок
+print(confusion_matrix(y_test_data, predictions))
+'''
+Выбор оптимального значения для K 
+с помощью метода «Локтя»
+'''
+error_rates = []
+for i in np.arange(1, 101):
+    new_model = KNeighborsClassifier(n_neighbors = i)
+    new_model.fit(x_training_data, y_training_data)
+    new_predictions = new_model.predict(x_test_data)
+    error_rates.append(np.mean(new_predictions != y_test_data))
+plt.plot(error_rates);
+'''
+Создание и обучение модели кластеризации K-средних
+'''
+from sklearn.datasets import make_blobs
+raw_data = make_blobs(
+    n_samples = 200, 
+    n_features = 2, 
+    centers = 4, 
+    cluster_std = 1.8
+)
+from sklearn.cluster import KMeans
+model = KMeans(n_clusters=4)
+model.fit(raw_data[0])
+model.labels_
+model.cluster_centers_
+'''
+Визуализация точности предсказаний модели
+'''
+f, (ax1, ax2) = plt.subplots(1, 2, sharey=True,figsize=(10,6))
+ax1.set_title('Наши предсказания')
+ax1.scatter(raw_data[0][:,0], raw_data[0][:,1],c=model.labels_)
+ax2.set_title('Реальные значения')
+ax2.scatter(raw_data[0][:,0], raw_data[0][:,1],c=raw_data[1]);
+plt.show()
+
+print("Среднее значение =\n", data.mean(axis=0))
+print("Стандартное отклонение =\n", data.std(axis=0))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import clr
+
+clr.AddReference('System.IO')
+clr.AddReference('System.Drawing')
+clr.AddReference('System.Reflection')
+clr.AddReference('System.Threading')
+clr.AddReference('System.Windows.Forms')
+
+import System
+import System.IO
+import System.Drawing
+import System.Reflection
+import System.Windows.Forms
+from System.Threading import ApartmentState, Thread, ThreadStart
+
+class InteropExplorer(System.Windows.Forms.Form):
+    def __init__(self):
+        self.Text = 'Анализатор данных'
+        self.BackColor = System.Drawing.FromArgb(238, 238, 238)
+        self.ClientSize = System.Drawing.Size(600, 600)
+        caption_height = System.Windows.Form.SystemInformation.CaptionHeight
+        self.MinimumSize = System.Drawing.Size(392, (117 + caption_height))
+
+    def run(self):
+        System.Windows.Forms.Application.Run(self)
+
+def main_form_thread():
+    interop_explorer = InteropExplorer()
+    win_form_app = System.Windows.Forms.Application
+    win_form_app.Run(interop_explorer)
+
+if __name__ == '__main__':
+    main_form_thread()
