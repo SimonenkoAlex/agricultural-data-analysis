@@ -17,29 +17,30 @@ climate2019 = ['Climate\Climate-2019-1.xlsx', 'Climate\Climate-2019-2.xlsx', 'Cl
 climate2018 = ['Climate\Climate-2018-1.xlsx', 'Climate\Climate-2018-2.xlsx', 'Climate\Climate-2018-3.xlsx']
 
 def main():
-    resp2021 = urlopen('https://rosstat.gov.ru/storage/mediabank/Val1.zip')
-    resp2020 = urlopen('https://rosstat.gov.ru/storage/mediabank/Val1_2020.zip')
-    resp2019 = urlopen('https://rosstat.gov.ru/storage/mediabank/Z2bDPBEl/Val1-19.zip')
+    #resp2021 = urlopen('https://rosstat.gov.ru/storage/mediabank/Val1.zip')
+    #resp2020 = urlopen('https://rosstat.gov.ru/storage/mediabank/Val1_2020.zip')
+    #resp2019 = urlopen('https://rosstat.gov.ru/storage/mediabank/Z2bDPBEl/Val1-19.zip')
 
-    zip2021 = ZipFile(BytesIO(resp2021.read()))
-    zip2020 = ZipFile(BytesIO(resp2020.read()))
-    zip2019 = ZipFile(BytesIO(resp2019.read()))
+    #zip2021 = ZipFile(BytesIO(resp2021.read()))
+    #zip2020 = ZipFile(BytesIO(resp2020.read()))
+    #zip2019 = ZipFile(BytesIO(resp2019.read()))
 
-    print("2021 -\n", zip2021.namelist(), "\n")
-    print("2020 -\n", zip2020.namelist(), "\n")
-    print("2019 -\n", zip2019.namelist(), "\n")
+    #print("2021 -\n", zip2021.namelist(), "\n")
+    #print("2020 -\n", zip2020.namelist(), "\n")
+    #print("2019 -\n", zip2019.namelist(), "\n")
 
-    zip2021.extract('tab123.xls')
-    os.rename("tab123.xls", "agricultural2021.xls")
-    zip2020.extract('tab123.xls')
-    os.rename("tab123.xls", "agricultural2020.xls")
-    zip2019.extract('tab123.xls')
-    os.rename("tab123.xls", "agricultural2019.xls")
-    
+    #zip2021.extract('tab123.xls')
+    #os.rename("tab123.xls", "agricultural2021.xls")
+    #zip2020.extract('tab123.xls')
+    #os.rename("tab123.xls", "agricultural2020.xls")
+    #zip2019.extract('tab123.xls')
+    #os.rename("tab123.xls", "agricultural2019.xls")
+    # peas (горох)
     peas2021 = pd.read_excel('agricultural2021.xls', sheet_name='T_1123', header=4)
     peas2020 = pd.read_excel('agricultural2020.xls', sheet_name='T_1123', header=4)
     peas2019 = pd.read_excel('agricultural2019.xls', sheet_name='T_1123', header=4)
-
+    #print("Урожайность гороха в 2021 -\n", peas2021, "\n")
+    # beans (фасоль)
     beans2021 = pd.read_excel('agricultural2021.xls', sheet_name='T_1124', header=4)
     beans2020 = pd.read_excel('agricultural2020.xls', sheet_name='T_1124', header=4)
     beans2019 = pd.read_excel('agricultural2019.xls', sheet_name='T_1124', header=4)

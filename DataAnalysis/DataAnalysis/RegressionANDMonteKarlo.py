@@ -152,7 +152,7 @@ def get_factors(data, Y, columns):
     print(df_model)
     return df_model
 
-file = 'SborVal2021.xlsx'
+file = 'Farming\AgriculturalTR.xlsx'
 df=pd.read_excel(file, engine='openpyxl')
 print(df.head())
 print(df.tail())
@@ -161,8 +161,8 @@ df.fillna(0, inplace=True)
 print(df.columns)
 # Построим матрицы рассеивания для значащих столбцов.
 from pandas.plotting import scatter_matrix
-scatter_matrix(df[['agricultural products', 'crop production', 
-                   'livestock products', 'temperature', 'rainfall']], figsize=(18,18), alpha=0.2)
+scatter_matrix(df[['2021', 'tмакс °C (2021)', 'tмин °C (2021)', 'tср °C (2021)', 
+                   'скорость ветра (2021)', 'осадки (2021)']], figsize=(18,18), alpha=0.2)
 plt.show()
 # Посчитаем парные корреляции и отразим их на диаграмме. 
 # Передадим функции h_map на датасет и уровень значимости корреляции.

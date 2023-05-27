@@ -25,6 +25,9 @@
     <Compile Include="Clustering.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DataAnalysis.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="RandomForest.py">
       <SubType>Code</SubType>
     </Compile>

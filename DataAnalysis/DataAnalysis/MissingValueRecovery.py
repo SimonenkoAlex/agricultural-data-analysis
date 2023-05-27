@@ -24,7 +24,7 @@ def pred_kk_by_feature(df, pred_object, pred_feature):
     mean_feature_pred_object = df[pred_feature].mean() # среднее значение признака
     pred_feature_object = mean_feature_pred_object+1/KK.abs().sum()*dif_mult_kk # получаем предсказание пропущенного значения
 
-    #print(f'Значение признака, рассчитанное с помощью КК (по признакам) : {round(pred_feature_object, 2)}\n')
+    print(f'Значение признака, рассчитанное с помощью КК (по признакам) : {round(pred_feature_object, 2)}\n')
     return(pred_feature_object)
 
 def pred_kk_by_object(df, pred_object, pred_feature):
@@ -41,7 +41,7 @@ def pred_kk_by_object(df, pred_object, pred_feature):
     
     pred_feature_object = mean_W+norm_mult*dif_mult_kk # получаем предсказание пропущенного значения
     
-    #print(f'Значение признака, рассчитанное с помощью КК (по объектам) : {round(pred_feature_object, 2)}\n')
+    print(f'Значение признака, рассчитанное с помощью КК (по объектам) : {round(pred_feature_object, 2)}\n')
     return(pred_feature_object)
 
 def pred_metric(metric_name, df, pred_object, pred_feature):
@@ -70,7 +70,7 @@ def pred_metric(metric_name, df, pred_object, pred_feature):
     norm_mul = 1/((1/metric).sum()).item() # нормирующий множитель
     similarity = (feature_other_objects.values/metric.values).sum() # значение признака * мера близости(=величина, обратно пропорциональная мере расстояния)
     pred_feature_object = norm_mul*similarity
-    #print(f'Значение признака, рассчитанное по метрике {metric_name}: {round(pred_feature_object, 2)}\n')
+    print(f'Значение признака, рассчитанное по метрике {metric_name}: {round(pred_feature_object, 2)}\n')
     return pred_feature_object
 
 #pred_object = 'W7'
@@ -94,6 +94,7 @@ delete_col = ['subjects_of_the_RF', 'label']
 #print(NaN_2019, "\n")
 #print(NaN_2018, "\n")
 
+print('\nПропуски до:', len(NaN_2021[0]), '\n')
 i = 0
 while i < len(NaN_2021[0]):
     for pred_object in NaN_2021:
@@ -109,6 +110,8 @@ while i < len(NaN_2021[0]):
         pred.sort()
         dataframe.loc[pred_object[i], '2021'] = round(statistics.median(pred), 2)
     i += 1
+NaN_2021=np.where(dataframe['2021']==0)
+print('\nПропуски после:', len(NaN_2021[0]), '\n')
 
 i = 0
 while i < len(NaN_2020[0]):
